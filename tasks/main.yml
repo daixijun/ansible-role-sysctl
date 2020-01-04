@@ -1,0 +1,19 @@
+---
+# tasks file for daixijun.sysctl
+- name: Set sysctl facts
+  set_fact:
+    settings: "{{ sysctl_commons | combine(sysctl_items) }}"
+
+- name: Apply sysctl settings
+  sysctl:
+    name: "{{ item.key }}"
+    reload: "{{ item.value.reload | default(omit) }}"
+    state: "{{ item.value.state | default('present') }}"
+    sysctl_set: "{{ item.value.sysctl_set | default(omit) }}"
+    ignoreerrors: "{{ item.value.ignoreerrors | default(omit) }}"
+    sysctl_file: "{{ item.value.sysctl_file | default('/etc/sysctl.conf') }}"
+    value: "{{ item.value.value | default(omit) }}"
+  loop: "{{ q('dict', settings) }}"
+  when:
+    - settings|length > 0
+    - ansible_virtualization_type != "docker"
