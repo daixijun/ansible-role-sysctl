@@ -1,48 +1,44 @@
-Role Name
-=========
+# daixijun.sysctl
 
-A brief description of the role goes here.
+[![Build Status](https://github.com/daixijun/ansible-role-sysctl/workflows/build/badge.svg)](https://github.com/daixijun/ansible-role-sysctl/actions)
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-daixijun.sysctl-660198.svg?style=flat)](https://galaxy.ansible.com/daixijun/ansible-role-sysctl/)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/daixijun/ansible-role-sysctl?sort=semver)](https://github.com/daixijun/ansible-role-sysctl/tags)
 
-Requirements
-------------
+系统内核优化，默认内核配置内容参考[sysctl_commons](./defaults/main.yml)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+## 环境要求
 
-Role Variables
---------------
+- RHEL/CentOS 6 及以上版本
+- ansible 2.7 及以上版本
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+## 变量
 
-Dependencies
-------------
+```yaml
+# 需要修改的配置项
+sysctl_items: {}
+  # net.ipv4.ip_forward:
+  #   value: 1
+```
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+## 依赖
 
-Example Playbook
-----------------
+无
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+## 使用示例
 
-    - hosts: servers
-      roles:
-         - { role: daixijun.sysctl, x: 42 }
+```yaml
+- hosts: servers
+  roles:
+    - role: daixijun.sysctl
+      sysctl_items:
+        net.ipv4.ip_forward:
+          value: 1
+```
 
-License
--------
+## License
 
 BSD
 
-Author Information
-------------------
+## 维护者
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+- Xijun Dai <daixijun1990@gmail.com>
