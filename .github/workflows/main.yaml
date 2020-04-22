@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [centos6, centos7, centos8]
+        os: [centos7, centos8]
     steps:
       - name: Checkout
         uses: actions/checkout@v2

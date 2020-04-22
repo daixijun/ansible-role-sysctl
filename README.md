@@ -8,7 +8,7 @@
 
 ## 环境要求
 
-- RHEL/CentOS 6 及以上版本
+- RHEL/CentOS 7 及以上版本
 - ansible 2.7 及以上版本
 
 ## 变量
