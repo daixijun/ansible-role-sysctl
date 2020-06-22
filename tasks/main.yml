@@ -1,19 +1,30 @@
 ---
-# tasks file for daixijun.sysctl
-- name: Set sysctl facts
-  set_fact:
-    settings: "{{ sysctl_commons | combine(sysctl_items) }}"
+- name: Copy sysctl.conf
+  copy:
+    src: sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: "644"
+  register: _sysctl
+
+- name: sysctl -p
+  command: /usr/sbin/sysctl -p
+  ignore_errors: True
+  when:
+    - _sysctl is changed
 
 - name: Apply sysctl settings
   sysctl:
     name: "{{ item.key }}"
-    reload: "{{ item.value.reload | default(omit) }}"
-    state: "{{ item.value.state | default('present') }}"
-    sysctl_set: "{{ item.value.sysctl_set | default(omit) }}"
-    ignoreerrors: "{{ item.value.ignoreerrors | default(omit) }}"
-    sysctl_file: "{{ item.value.sysctl_file | default('/etc/sysctl.conf') }}"
-    value: "{{ item.value.value | default(omit) }}"
-  loop: "{{ q('dict', settings) }}"
+    reload: yes
+    state: "{{ item.state | default('present') }}"
+    sysctl_set: "{{ item.sysctl_set | default(omit) }}"
+    ignoreerrors: "{{ item.ignoreerrors | default(omit) }}"
+    sysctl_file: "{{ item.sysctl_file | default('/etc/sysctl.d/user.conf') }}"
+    value: "{{ item.value }}"
+  loop: "{{ sysctl_items }}"
+  ignore_errors: True
   when:
-    - settings|length > 0
+    - sysctl_items|length > 0
     - ansible_virtualization_type != "docker"

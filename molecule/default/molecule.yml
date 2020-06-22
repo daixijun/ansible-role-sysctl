@@ -4,9 +4,9 @@ dependency:
 driver:
   name: docker
 lint: |
-  set -ex
+  set -e
   yamllint .
-  ansible-lint .
+  ansible-lint -v
 platforms:
   - name: sysctl
     image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
